@@ -1,4 +1,4 @@
-# Deluge Sickbeard Plugin
+# Deluge SickRage Auto Process Plugin XX
 
 =======
 **Automatically** or manually process **completed** or **failed** Deluge *torrent* downloads with SickRage. Provides full *torrent* integration of [Deluge][deluge] with [SickRage][sickrage], a fork of [Sickbeard][sickbeard].
@@ -13,7 +13,7 @@
 
 For more information visit the [project page][project-page] on GitHub.
 
-[project-page]: http://srluge.github.io/DelugeSickbeardPlugin
+[project-page]: https://github.com/CCoupel/DelugeAutoSickrageProcess
 [deluge]: http://deluge-torrent.org/
 [sickrage]: https://github.com/SiCKRAGETV/SickRage
 [sickbeard]: http://sickbeard.com/
