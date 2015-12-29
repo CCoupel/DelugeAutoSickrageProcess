@@ -72,9 +72,10 @@ class Manager(object):
         if torrent_id in self.statusdb:
             status = self.statusdb[torrent_id]
         else:
-            status = Status(torrent)
+            status = Status(self.torrents[torrent_id])
 
         status.update()
+	self.update()
 
     def on_completed(self, status):
         self.log.debug("Torrent competed event: %s (failed=%s)", status.torrent_id, status.failed)

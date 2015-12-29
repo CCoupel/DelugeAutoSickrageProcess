@@ -81,11 +81,14 @@ class WebClient:
 
         if username:
             authorization            = b64encode(username + ":" + password)
-            headers['Authorization'] = [authorization]
+            headers['Authorization'] = ['Basic '+authorization]
+            self.log.info('Headers: %s' % headers)
 
         url = self._get_url(base_url, args)
 
         self.log.info('Requesting URL: %s' % url)
+        self.log.info('USER: %s' % username)
+        self.log.info('Password: %s' % password)
 
         d_agent  = agent.request(
             'GET',
