@@ -1,4 +1,4 @@
-# Deluge Sickbeard Plugin
+# Deluge SickRage Auto Process Plugin (ak DSAPP)
 
 =======
 **Automatically** or manually process **completed** or **failed** Deluge *torrent* downloads with SickRage. Provides full *torrent* integration of [Deluge][deluge] with [SickRage][sickrage], a fork of [Sickbeard][sickbeard].
@@ -11,9 +11,14 @@
 * 'Download *failed* status' visible per Torrent in Deluge UI
 * Easy configuration
 
+TODO:
+- Process finished download based on label list
+- Process via SickRage API, TorentToMedia or external script
+- Manage CouchPotato
+
 For more information visit the [project page][project-page] on GitHub.
 
-[project-page]: http://srluge.github.io/DelugeSickbeardPlugin
+[project-page]: https://github.com/CCoupel/DelugeAutoSickrageProcess
 [deluge]: http://deluge-torrent.org/
 [sickrage]: https://github.com/SiCKRAGETV/SickRage
 [sickbeard]: http://sickbeard.com/
