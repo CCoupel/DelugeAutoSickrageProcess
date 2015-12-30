@@ -327,7 +327,7 @@ Deluge.ux.preferences.SickbeardPage = Ext.extend(Ext.form.FormPanel, {
             width: '100%',
             style: 'margin-bottom: 10px',
             bodyCfg: {
-                html: _('Specify the Sickbeard post-processing method and '
+                html: _('Specify the Sickbeard labels, post-processing method and '
                     +   'configure how this plugin should handle post-processed '
                     +   'torrents.')
             }
@@ -377,6 +377,12 @@ Deluge.ux.preferences.SickbeardPage = Ext.extend(Ext.form.FormPanel, {
             triggerAction: 'all',
             qtip: _("Specify Sickbeard post-processing method. 'Sickbeard Default' selects the default method " +
                     "configured in Sickbeard. To override the Sickbeard default, use one of the other options.")
+        });
+
+        this.txtProcessLabelName = this.fsetProcSickbeard.add({
+            name: 'process_label_name',
+            fieldLabel: _('Label name'),
+            qtip: _('Specify the label name which will need to be set on the torrent. Default is sickbeard.')
         });
 
         this.fsetProcPlugin = new Ext.form.FieldSet({

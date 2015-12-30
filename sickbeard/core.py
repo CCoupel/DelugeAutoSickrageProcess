@@ -52,6 +52,7 @@ DEFAULT_PREFS = {
     'failed_time'      : 24,          # Process as failed if torrent is downloading longer then N hours
     'failed_label'     : True,        # Limit failed detection to torrents with configured label
     'failed_label_name': 'sickrage',  # Labelname
+    'process_label_name': 'sickrage',  # Labelname
     'remove'           : False,
     'remove_data'      : False,
 }
