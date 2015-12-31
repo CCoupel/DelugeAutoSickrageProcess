@@ -400,6 +400,27 @@ Deluge.ux.preferences.SickbeardPage = Ext.extend(Ext.form.FormPanel, {
             qtip: _('Specify the label name which will need to be set on the torrent. Default is sickbeard.')
         });
 
+        this.chkProcessExternal = this.fsetProcSickbeard.add({
+            xtype: 'checkbox',
+            name: 'process_external',
+            hideLabel: true,
+            width: 280,
+            boxLabel: _('Process from Sickrage API'),
+            listeners: {
+                scope: this,
+                check: function(cb, checked) {
+                    this.txtProcessExternalName.setDisabled(checked);
+                }
+            },
+            qtip: _("Process finished torrent via external script call or direct Sickrage API. Default is enabeld.")
+        });
+
+        this.txtProcessExternalName = this.fsetProcSickbeard.add({
+            name: 'process_external_name',
+            fieldLabel: _('external script name'),
+            qtip: _('path to the external script')
+        });
+
         this.fsetProcPlugin = new Ext.form.FieldSet({
             border: false,
             title: _('Plugin'),
