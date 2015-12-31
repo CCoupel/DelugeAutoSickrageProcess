@@ -68,21 +68,16 @@ class Manager(object):
 
     def on_finished(self, torrent_id):
 	labelplugin = component.get("CorePlugin.Label")
+        self.log.info("Torrent finished event: %s (label=%s)", torrent_id,labelplugin._status_get_label(torrent_id))
 	if labelplugin:
-        	self.log.info("Torrent finished event: %s (label=%s)", torrent_id,labelplugin._status_get_label(torrent_id))
-		process_labels=Status.config['process_label_name']
-		torrent_label=labelplugin._status_get_label(torrent_id)
-		if torrent_label in process_labels:
-			self.log.info("%s included in %s",torrent_label, process_labels)
-		        if torrent_id in self.statusdb:
-	        	    status = self.statusdb[torrent_id]
-		        else:
-	        	    status = Status(self.manager.torrents[torrent_id])
-
-		        status.update()
-#			self.update()
+		if torrent_id in self.statusdb:
+        	    status = self.statusdb[torrent_id]
+	        else:
+        	    status = Status(self.manager.torrents[torrent_id])
+		self.log.info("Running status.update()")
+	        status.update()
 	else:
-		self.log.warning("LABEL plugin not installed")
+		self.log.warning("LABEL plugin MUST be installed")
 
 
     def on_completed(self, status):

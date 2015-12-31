@@ -379,8 +379,23 @@ Deluge.ux.preferences.SickbeardPage = Ext.extend(Ext.form.FormPanel, {
                     "configured in Sickbeard. To override the Sickbeard default, use one of the other options.")
         });
 
-        this.txtProcessLabelName = this.fsetProcSickbeard.add({
-            name: 'process_label_name',
+        this.chkFailedLabel = this.fsetProcSickbeard.add({
+            xtype: 'checkbox',
+            name: 'failed_label',
+            hideLabel: true,
+            width: 280,
+            boxLabel: _('Process only torrents with label'),
+            listeners: {
+                scope: this,
+                check: function(cb, checked) {
+                    this.txtFailedLabelName.setDisabled(!checked);
+                }
+            },
+            qtip: _("Only perform failure detection on torrents with a specific label. Otherwise perform failure detection on all torrents. Default is enabeld.")
+        });
+
+        this.txtFailedLabelName = this.fsetProcSickbeard.add({
+            name: 'failed_label_name',
             fieldLabel: _('Label name'),
             qtip: _('Specify the label name which will need to be set on the torrent. Default is sickbeard.')
         });
@@ -493,26 +508,6 @@ Deluge.ux.preferences.SickbeardPage = Ext.extend(Ext.form.FormPanel, {
             qtip: _("Enable or disabled automatic failed download post-processing.")
         });
 
-        this.chkFailedLabel = this.fsetFailed.add({
-            xtype: 'checkbox',
-            name: 'failed_label',
-            hideLabel: true,
-            width: 280,
-            boxLabel: _('Process only torrents with label'),
-            listeners: {
-                scope: this,
-                check: function(cb, checked) {
-                    this.txtFailedLabelName.setDisabled(!checked);
-                }
-            },
-            qtip: _("Only perform failure detection on torrents with a specific label. Otherwise perform failure detection on all torrents. Default is enabeld.")
-        });
-
-        this.txtFailedLabelName = this.fsetFailed.add({
-            name: 'failed_label_name',
-            fieldLabel: _('Label name'),
-            qtip: _('Specify the label name which will need to be set on the torrent. Default is sickbeard.')
-        });
 
         this.fsetFailedAvail = new Ext.form.FieldSet({
             border: false,
