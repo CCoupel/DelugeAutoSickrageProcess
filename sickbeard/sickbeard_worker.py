@@ -265,12 +265,13 @@ class SickbeardWorker(Worker):
 
             client  = WebClient(self.wlog)
 	# EXTERNAL CALL
-	    if self.config["process_external"]:
+	    if ( self.config["process_external"] or params["failed"] == 1):
 		self.tlog.info("Calling sickrage API")
 	        result  = yield client.get(base_url, args = params, username = self.config['username'], password = self.config['password'])
 	    else:
 		self.tlog.info("Running external handler: %s",self.config["process_external_name"])
-		result = yield call([self.config["process_external_name"],"AR1","Arg2","Arg3"])
+		result = yield call([self.config['process_external_name'],id,name,dir])
+		self.tlog.info('External return code=%s',result)
         except Exception as e:
             result = False
 

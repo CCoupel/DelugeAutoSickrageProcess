@@ -10,10 +10,14 @@
 * 'Download *processing* status' visible per Torrent in Deluge UI
 * 'Download *failed* status' visible per Torrent in Deluge UI
 * Easy configuration
+ENANHCEMENT:
+- Process finished download based on label list
+
+NEW:
+- Process via SickRage API, external script
 
 TODO:
-- Process finished download based on label list
-- Process via SickRage API, TorentToMedia or external script
+- Mail Notification
 - Manage CouchPotato
 
 For more information visit the [project page][project-page] on GitHub.

@@ -1,6 +1,0 @@
-#!/bin/bash
-systemctl stop deluged deluge-web
-cd /opt/DelugeAutoSickrageProcess/
-python setup.py bdist_egg
-rm /var/lib/deluged/Downloads/complete/The.Librarians.US.S02E09.HDTV.x264-KILLERS\[ettv\]/Torrent-Downloaded-from-ExtraTorrent.cc.txt
-systemctl restart deluged deluge-web
