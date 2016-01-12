@@ -54,6 +54,8 @@ DEFAULT_PREFS = {
     'failed_label_name': 'sickrage',  # Labelname
     'remove'           : False,
     'remove_data'      : False,
+    'process_external'      : True,
+    'process_external_name': 'sickrage',  # Labelname
 }
 
 class Core(CorePluginBase):

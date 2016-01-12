@@ -67,14 +67,18 @@ class Manager(object):
         self.eventmanager.deregister_event_handler(name,callback)
 
     def on_finished(self, torrent_id):
-        self.log.info("Torrent finished event: %s", torrent_id)
+	labelplugin = component.get("CorePlugin.Label")
+        self.log.info("Torrent finished event: %s (label=%s)", torrent_id,labelplugin._status_get_label(torrent_id))
+	if labelplugin:
+		if torrent_id in self.statusdb:
+        	    status = self.statusdb[torrent_id]
+	        else:
+        	    status = Status(self.manager.torrents[torrent_id])
+		self.log.info("Running status.update()")
+	        status.update()
+	else:
+		self.log.warning("LABEL plugin MUST be installed")
 
-        if torrent_id in self.statusdb:
-            status = self.statusdb[torrent_id]
-        else:
-            status = Status(torrent)
-
-        status.update()
 
     def on_completed(self, status):
         self.log.debug("Torrent competed event: %s (failed=%s)", status.torrent_id, status.failed)

@@ -327,7 +327,7 @@ Deluge.ux.preferences.SickbeardPage = Ext.extend(Ext.form.FormPanel, {
             width: '100%',
             style: 'margin-bottom: 10px',
             bodyCfg: {
-                html: _('Specify the Sickbeard post-processing method and '
+                html: _('Specify the Sickbeard labels, post-processing method and '
                     +   'configure how this plugin should handle post-processed '
                     +   'torrents.')
             }
@@ -377,6 +377,48 @@ Deluge.ux.preferences.SickbeardPage = Ext.extend(Ext.form.FormPanel, {
             triggerAction: 'all',
             qtip: _("Specify Sickbeard post-processing method. 'Sickbeard Default' selects the default method " +
                     "configured in Sickbeard. To override the Sickbeard default, use one of the other options.")
+        });
+
+        this.chkFailedLabel = this.fsetProcSickbeard.add({
+            xtype: 'checkbox',
+            name: 'failed_label',
+            hideLabel: true,
+            width: 280,
+            boxLabel: _('Process only torrents with label'),
+            listeners: {
+                scope: this,
+                check: function(cb, checked) {
+                    this.txtFailedLabelName.setDisabled(!checked);
+                }
+            },
+            qtip: _("Only perform failure detection on torrents with a specific label. Otherwise perform failure detection on all torrents. Default is enabeld.")
+        });
+
+        this.txtFailedLabelName = this.fsetProcSickbeard.add({
+            name: 'failed_label_name',
+            fieldLabel: _('Label name'),
+            qtip: _('Specify the label name which will need to be set on the torrent. Default is sickbeard.')
+        });
+
+        this.chkProcessExternal = this.fsetProcSickbeard.add({
+            xtype: 'checkbox',
+            name: 'process_external',
+            hideLabel: true,
+            width: 280,
+            boxLabel: _('Process from Sickrage API'),
+            listeners: {
+                scope: this,
+                check: function(cb, checked) {
+                    this.txtProcessExternalName.setDisabled(checked);
+                }
+            },
+            qtip: _("Process finished torrent via external script call or direct Sickrage API. Default is enabeld.")
+        });
+
+        this.txtProcessExternalName = this.fsetProcSickbeard.add({
+            name: 'process_external_name',
+            fieldLabel: _('external script name'),
+            qtip: _('path to the external script')
         });
 
         this.fsetProcPlugin = new Ext.form.FieldSet({
@@ -487,26 +529,6 @@ Deluge.ux.preferences.SickbeardPage = Ext.extend(Ext.form.FormPanel, {
             qtip: _("Enable or disabled automatic failed download post-processing.")
         });
 
-        this.chkFailedLabel = this.fsetFailed.add({
-            xtype: 'checkbox',
-            name: 'failed_label',
-            hideLabel: true,
-            width: 280,
-            boxLabel: _('Process only torrents with label'),
-            listeners: {
-                scope: this,
-                check: function(cb, checked) {
-                    this.txtFailedLabelName.setDisabled(!checked);
-                }
-            },
-            qtip: _("Only perform failure detection on torrents with a specific label. Otherwise perform failure detection on all torrents. Default is enabeld.")
-        });
-
-        this.txtFailedLabelName = this.fsetFailed.add({
-            name: 'failed_label_name',
-            fieldLabel: _('Label name'),
-            qtip: _('Specify the label name which will need to be set on the torrent. Default is sickbeard.')
-        });
 
         this.fsetFailedAvail = new Ext.form.FieldSet({
             border: false,

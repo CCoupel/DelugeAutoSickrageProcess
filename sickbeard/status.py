@@ -62,13 +62,16 @@ class Status(object):
         """Analyze torrents and update statistics"""
 
         if self.completed:
-            return
+        	Status.log.info("torrent %s already completed" % (self.torrent_id))
+        	return
 
         state             = TorrentInfo.state(self.torrent)
         name              = TorrentInfo.get_display_name(self.torrent)
         copies            = TorrentInfo.get_distributed_copies(self.torrent)
         finished          = TorrentInfo.is_finished(self.torrent)
         id                = self.torrent_id
+
+        Status.log.info("Updating torrent %s (d=%s/u=%d/c=%d)" % (id, self.downloading, self.unavailable, copies))
 
         failed_limit      = Status.config['failed_limit']
         failed_time       = Status.config['failed_time']
@@ -80,10 +83,12 @@ class Status(object):
             self.time_added = self.torrent.time_added
 
         if label_check:
+	    self.log.info("Checking Failed LABELS %s",label_check_name)
             labelplugin = component.get("CorePlugin.Label")
             if labelplugin:
                 labels = labelplugin._status_get_label(id)
                 if not label_check_name in labels:
+		    self.log.info("%s not included in %s",labels,label_check_name)
                     return
             else:
                 return

@@ -21,6 +21,7 @@
 import logging
 import sys
 import error      as sb_err
+from subprocess	import call, Popen
 
 from twisted.internet       import defer, reactor
 from twisted.internet.defer import inlineCallbacks
@@ -263,7 +264,14 @@ class SickbeardWorker(Worker):
             self._ensure_saved_path(torrent);
 
             client  = WebClient(self.wlog)
-            result  = yield client.get(base_url, args = params, username = self.config['username'], password = self.config['password'])
+	# EXTERNAL CALL
+	    if ( self.config["process_external"] or params["failed"] == 1):
+		self.tlog.info("Calling sickrage API")
+	        result  = yield client.get(base_url, args = params, username = self.config['username'], password = self.config['password'])
+	    else:
+		self.tlog.info("Running external handler: %s",self.config["process_external_name"])
+		result = yield call([self.config['process_external_name'],id,name,dir])
+		self.tlog.info('External return code=%s',result)
         except Exception as e:
             result = False
 
@@ -290,7 +298,7 @@ class SickbeardWorker(Worker):
             self.tlog.info("Sickbeard post-processing torrent(%s) succeeded" % name)
         else:
             self.tlog.info("Sickbeard post-processing torrent(%s) failed" % name)
-
+#UNPAUSE torrent
         defer.returnValue(succeeded)
 
     @staticmethod
