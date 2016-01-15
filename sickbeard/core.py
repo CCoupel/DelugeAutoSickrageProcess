@@ -56,6 +56,10 @@ DEFAULT_PREFS = {
     'remove_data'      : False,
     'process_external'      : True,
     'process_external_name': 'sickrage',  # Labelname
+    'Notif_Sender' : '',
+    'Notif_Recipient' : '',
+    'Notif_Mailer' : 'localhost'
+
 }
 
 class Core(CorePluginBase):

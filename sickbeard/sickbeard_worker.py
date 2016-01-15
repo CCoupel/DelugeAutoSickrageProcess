@@ -17,6 +17,8 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
+import smtplib
+from email.mime.text import MIMEText
 
 import logging
 import sys
@@ -226,6 +228,15 @@ class SickbeardWorker(Worker):
         """
 
         try:
+	    self.tlog.info("sending notification mail : " )
+	    msg 		= MIMEText("message")
+	    msg["Subject"]	= "subject"
+	    msg["From"]		= self.config["Notif_Sender"]
+	    msg["To"]		= self.config["Notif_Recipient"]
+	    s			= smtplib.SMTP(self.config["Notif_Mailer"])
+	    s.sendmail(msg["From"],msg["To"],msg.as_string())
+	    s.quit()
+
             torrent = task.torrent
 
             dir  = TorrentInfo.get_saved_path(torrent)
@@ -234,40 +245,41 @@ class SickbeardWorker(Worker):
             id   = TorrentInfo.get_id(torrent)
 
             params                   = {}
-            params['dir']            = dir.encode('utf-8')
-            params['nzbName']        = name.encode('utf-8')
-            params['quiet']          = 1 if self.config["quiet"] else None
-
-            params['type']           = ProccessType.AUTOMATIC
-            params['process_method'] = self.config["method"] if self.config["method"] != ProccessMethod.SB_DEFAULT else None
-            params['force']          = "on" if self.config["force"]    or task.force    else None
-            params['is_priority']    = "on" if self.config["priority"] or task.priority else None
             params['failed']         = 1 if task.failed else 0
 
-            base_url = self.get_base_url()
+	    if ( self.config["process_external"] or params["failed"] == 1):
+               params['dir']            = dir.encode('utf-8')
+               params['nzbName']        = name.encode('utf-8')
+               params['quiet']          = 1 if self.config["quiet"] else None
 
-            self.tlog.info("Contacting Sickbeard for post-processing")
-            self.tlog.info("Torrent(nzbname): %s" % name)
-            self.tlog.info("Using base URL  : %s" % base_url)
-            self.tlog.info("Username        : %s" % self.config['username'])
-            self.tlog.info("Request Type    : %s" % params['type'])
-            self.tlog.info("Directory       : %s" % params['dir'])
-            self.tlog.info("Mode            : %s" % mode)
-            methodDisplay = self.config["method"] if self.config["method"] != ProccessMethod.SB_DEFAULT else "Sickbeard Default"
-            self.tlog.info("Method          : %s" % methodDisplay)
-            self.tlog.info("Priority        : %s" % self.config["priority"])
-            self.tlog.info("Failed          : %s" % params['failed'])
-            self.tlog.info("Quiet           : %s" % self.config["quiet"])
+               params['type']           = ProccessType.AUTOMATIC
+               params['process_method'] = self.config["method"] if self.config["method"] != ProccessMethod.SB_DEFAULT else None
+               params['force']          = "on" if self.config["force"]    or task.force    else None
+               params['is_priority']    = "on" if self.config["priority"] or task.priority else None
+
+               base_url = self.get_base_url()
+
+               self.tlog.info("Contacting Sickbeard for post-processing")
+               self.tlog.info("Torrent(nzbname): %s" % name)
+               self.tlog.info("Using base URL  : %s" % base_url)
+               self.tlog.info("Username        : %s" % self.config['username'])
+               self.tlog.info("Request Type    : %s" % params['type'])
+               self.tlog.info("Directory       : %s" % params['dir'])
+               self.tlog.info("Mode            : %s" % mode)
+               methodDisplay = self.config["method"] if self.config["method"] != ProccessMethod.SB_DEFAULT else "Sickbeard Default"
+               self.tlog.info("Method          : %s" % methodDisplay)
+               self.tlog.info("Priority        : %s" % self.config["priority"])
+               self.tlog.info("Failed          : %s" % params['failed'])
+               self.tlog.info("Quiet           : %s" % self.config["quiet"])
 
             # Downloaded content directory/file must exist, even if it download actually failed, in order
             # for Sickbeard to be able to process the torrent
-            self._ensure_saved_path(torrent);
+               self._ensure_saved_path(torrent);
 
-            client  = WebClient(self.wlog)
+               client  = WebClient(self.wlog)
 	# EXTERNAL CALL
-	    if ( self.config["process_external"] or params["failed"] == 1):
-		self.tlog.info("Calling sickrage API")
-	        result  = yield client.get(base_url, args = params, username = self.config['username'], password = self.config['password'])
+	       self.tlog.info("Calling sickrage API")
+	       result  = yield client.get(base_url, args = params, username = self.config['username'], password = self.config['password'])
 	    else:
 		self.tlog.info("Running external handler: %s",self.config["process_external_name"])
 		result = yield call([self.config['process_external_name'],id,name,dir])
@@ -295,10 +307,20 @@ class SickbeardWorker(Worker):
         succeeded = True if errors == 0 and success >= 1 else False
 
         if succeeded:
-            self.tlog.info("Sickbeard post-processing torrent(%s) succeeded" % name)
+            ProcessResult="Sickbeard post-processing torrent(%s) succeeded" % name
         else:
-            self.tlog.info("Sickbeard post-processing torrent(%s) failed" % name)
+            ProcessResult="Sickbeard post-processing torrent(%s) failed" % name
+
+        self.tlog.info(ProcessResult)
 #UNPAUSE torrent
+	self.tlog.info("sending notification mail : " )
+	msg 		= MIMEText(Result)
+	msg["Subject"]	= ProcessResult
+	msg["From"]		= self.config["Notif_Sender"]
+	msg["To"]		= self.config["Notif_Recipient"]
+	s			= smtplib.SMTP(self.config["Notif_Mailer"])
+	s.sendmail(msg["From"],msg["To"],msg.as_string())
+
         defer.returnValue(succeeded)
 
     @staticmethod

@@ -21,8 +21,8 @@
 from setuptools import setup
 
 __plugin_name__      = "Sickbeard"
-__version__          = "0.1.0"
-__url__              = "https://github.com/srluge/DelugeSickbeardPlugin/blob/master/README.md"
+__version__          = "0.2.0"
+__url__              = "https://github.com/CCoupel/DelugeAutoSickrageProcess/blob/DEV/README.md"
 __license__          = "MIT"
 __description__      = "Deluge plugin for Sickbeard integration"
 __long_description__ = """Automatically process completed or failed downloads with Sickbeard."""
