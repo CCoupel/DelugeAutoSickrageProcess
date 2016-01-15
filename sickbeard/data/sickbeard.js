@@ -461,7 +461,7 @@ Deluge.ux.preferences.SickbeardPage = Ext.extend(Ext.form.FormPanel, {
         this.txtProcessExternalName = this.fsetProcSickbeard.add({
             name: 'process_external_name',
             fieldLabel: _('external script name'),
-            qtip: _('path to the external script')
+            qtip: _('path to the external script. Params are: $1=Torrent ID $2=Torrent Name $3=Downloaded Files Path')
         });
 
         this.fsetProcPlugin = new Ext.form.FieldSet({
