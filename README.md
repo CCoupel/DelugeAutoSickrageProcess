@@ -10,6 +10,7 @@
 * 'Download *processing* status' visible per Torrent in Deluge UI
 * 'Download *failed* status' visible per Torrent in Deluge UI
 * Easy configuration
+
 INSTALL:
 python setpu.py bdist_egg
 copy dist/Sickbeard*.egg deludeg/config/plugins
