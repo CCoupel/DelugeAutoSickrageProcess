@@ -230,14 +230,6 @@ class SickbeardWorker(Worker):
         """
 
         try:
-	    self.tlog.info("sending notification mail : " )
-	    msg 		= MIMEText("message")
-	    msg["Subject"]	= "subject"
-	    msg["From"]		= self.config["Notif_Sender"]
-	    msg["To"]		= self.config["Notif_Recipient"]
-	    s			= smtplib.SMTP(self.config["Notif_Mailer"])
-	    s.sendmail(msg["From"],msg["To"],msg.as_string())
-	    s.quit()
 
             torrent = task.torrent
 
