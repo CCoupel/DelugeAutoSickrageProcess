@@ -23,7 +23,9 @@ from email.mime.text import MIMEText
 import logging
 import sys
 import error      as sb_err
-from subprocess	import call, Popen
+#from subprocess	import check_output,call, Popen, PIPE
+import subprocess
+
 
 from twisted.internet       import defer, reactor
 from twisted.internet.defer import inlineCallbacks
@@ -282,8 +284,9 @@ class SickbeardWorker(Worker):
 	       result  = yield client.get(base_url, args = params, username = self.config['username'], password = self.config['password'])
 	    else:
 		self.tlog.info("Running external handler: %s",self.config["process_external_name"])
-		result = yield call([self.config['process_external_name'],id,name,dir])
-		self.tlog.info('External return code=%s',result)
+		proc = subprocess.Popen([self.config['process_external_name'],id,name,dir],stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+		(result, stderr) = proc.communicate()
+		self.tlog.info('External return code=%s stderr=%s stdout=%s',proc.returncode,stderr,result)
         except Exception as e:
             result = False
 
@@ -314,7 +317,7 @@ class SickbeardWorker(Worker):
         self.tlog.info(ProcessResult)
 #UNPAUSE torrent
 	self.tlog.info("sending notification mail : " )
-	msg 		= MIMEText(Result)
+	msg 		= MIMEText(result)
 	msg["Subject"]	= ProcessResult
 	msg["From"]		= self.config["Notif_Sender"]
 	msg["To"]		= self.config["Notif_Recipient"]
