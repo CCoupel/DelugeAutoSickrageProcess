@@ -208,6 +208,7 @@ Deluge.ux.preferences.SickbeardPage = Ext.extend(Ext.form.FormPanel, {
             }
         });
 
+
         this.fsetConn = new Ext.form.FieldSet({
             border: false,
             title: _('Connection'),
@@ -308,8 +309,50 @@ Deluge.ux.preferences.SickbeardPage = Ext.extend(Ext.form.FormPanel, {
             columnWidth: 0.5,
             style: 'margin-left: 15px; margin-top: 4px;'
         });
+/*
+        this.fsetNotif = new Ext.form.FieldSet({
+            border: false,
+            title: _('Plugin'),
+            style: 'margin-bottom: 0px; padding-bottom: 5px; padding-top: 5px;',
+            labelWidth: 110,
+            autoHeight: true,
+            defaultType: 'textfield',
+            defaults: {
+                width: 180,
+            }
+        });
+*/
+        this.chkNotif = this.fsetAuth.add({
+            xtype: 'checkbox',
+            name: 'Notif',
+            hideLabel: true,
+            width: 280,
+            boxLabel: _('Send Notification'),
+            listeners: {
+                scope: this,
+                check: function(cb, checked) {
+                    this.txtNotifSender.setDisabled(!checked);
+                    this.txtNotifRecipient.setDisabled(!checked);
+                }
+            },
+            qtip: _('Specify if notification mail is to be sent avec processing. Default is not to use SSL.')
+        });
 
-
+        this.txtNotifSender = this.fsetAuth.add({
+            name: 'Notif_Sender',
+            fieldLabel: _('Sender Mail Address'),
+            qtip: _('Specify the address of the notification sender. Default is "".')
+        });
+        this.txtNotifRecipient = this.fsetAuth.add({
+            name: 'Notif_Recipient',
+            fieldLabel: _('Recipient Mail Address'),
+            qtip: _('Specify the address of the notification recipient. Default is "".')
+	});
+        this.txtNotifMailer = this.fsetAuth.add({
+            name: 'Notif_Mailer',
+            fieldLabel: _('Mail Server'),
+            qtip: _('Specify the address of the notification mail server. Default is "localhost".')
+	});
         // Tab Processing
         /////////////////
 
@@ -418,7 +461,7 @@ Deluge.ux.preferences.SickbeardPage = Ext.extend(Ext.form.FormPanel, {
         this.txtProcessExternalName = this.fsetProcSickbeard.add({
             name: 'process_external_name',
             fieldLabel: _('external script name'),
-            qtip: _('path to the external script')
+            qtip: _('path to the external script. Params are: $1=Torrent ID $2=Torrent Name $3=Downloaded Files Path')
         });
 
         this.fsetProcPlugin = new Ext.form.FieldSet({
@@ -473,7 +516,6 @@ Deluge.ux.preferences.SickbeardPage = Ext.extend(Ext.form.FormPanel, {
             boxLabel: _('Also remove torrent data'),
             qtip: _("Also remove torrent data.")
         });
-
 
         // Tab Failed download handling
         ///////////////////////////////

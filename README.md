@@ -10,14 +10,20 @@
 * 'Download *processing* status' visible per Torrent in Deluge UI
 * 'Download *failed* status' visible per Torrent in Deluge UI
 * Easy configuration
+
+INSTALL:
+python setpu.py bdist_egg
+copy dist/Sickbeard*.egg deludeg/config/plugins
+
+
 ENANHCEMENT:
 - Process finished download based on label list
 
 NEW:
 - Process via SickRage API, external script
+- Mail Notification
 
 TODO:
-- Mail Notification
 - Manage CouchPotato
 
 For more information visit the [project page][project-page] on GitHub.
